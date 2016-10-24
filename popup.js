@@ -1,19 +1,14 @@
 var loadConfig = () => {
-
 	return new Promise((resolve, reject) => {
 		var xhrConfig = new XMLHttpRequest();
 		xhrConfig.onreadystatechange = function() {
 			if (xhrConfig.status === 200 && xhrConfig.readyState === 4) {
 				var config = JSON.parse(xhrConfig.response);
 				resolve(config);
-
-
 			}
 		}
 		xhrConfig.open("GET", chrome.extension.getURL('/config.json'), true);
 		xhrConfig.send();
-
-
 	})
 }
 
@@ -65,7 +60,7 @@ var saveHistory = (searchQuery) => {
 }
 
 var noDefinitionsFound = ()=>{
-	document.getElementById("resp").innerHTML = '<h3>No definitions found ! </h3> <br> See your search query. Use singular instead of plural. <br>Example - Search for <b>account </b> instead of <b>accounts</b> ';
+	document.getElementById("resp").innerHTML = '<h3>No definitions found ! </h3> <br> See your search query. Also use singular instead of plural. <br>Example - Search for <b>account </b> instead of <b>accounts</b> ';
 	document.getElementById('add_to_favorite').style.visibility = "hidden";
 }
 
