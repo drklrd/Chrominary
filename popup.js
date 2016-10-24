@@ -128,6 +128,8 @@ var searchWordMeaning = (searchQuery) => {
 
 document.addEventListener('DOMContentLoaded', () => {
 
+	document.getElementById('search_query').focus();
+
 	if (window.location.href.split('query=') && window.location.href.split('query=').length && window.location.href.split('query=')[1]) {
 		var query = window.location.href.split('query=')[1];
 		document.getElementById('search_query').value = query;
