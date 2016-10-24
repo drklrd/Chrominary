@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<title>Chrominary</title>
+		
+		<!-- Scripts -->
+		<script src="js/jquery-2.0.3.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		
+		<!-- Cascading Style Sheets -->
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="css/custom.css" rel="stylesheet" media="screen">
+		
+		<script src="popup.js"></script>	
+	</head>
+	
+	<body>
+		
+
+		<ul class="nav nav-tabs">
+		  <li class="active"><a data-toggle="tab" href="#home"><span class="glyphicon glyphicon-search"> </span> Search</a></li>
+		  <li id="view_favorites" ><a data-toggle="tab" href="#menu1"> <span class="glyphicon glyphicon-heart"> </span> Favorites</a></li>
+		  <li id="view_history"><a data-toggle="tab" href="#menu2"><span class="glyphicon glyphicon-th-list"> </span> History</a></li>
+		</ul>
+
+		<div class="tab-content">
+		  <div id="home" class="tab-pane  active">
+		    <section>
+		    	<form>
+		    		<div class="input-group">
+		    		  <input class="form-control" type="text"  id="search_query" placeholder="Search here">
+		    		  <a id="search_button" class="input-group-addon">
+		    		  		<span class="glyphicon glyphicon-search"></span>
+		    		  </a>
+		    		</div>
+		    		
+		    	</form>
+
+		    	<div class="footer">
+		    		<span>Dictionary content - courtesy of Oxford Dictionaries.https://developer.oxforddictionaries.com</span>
+		    	</div>
+		    	<div>
+		    		<button id="add_to_favorite" type="button" class="btn btn-success pull-right" >
+		    			<span class="glyphicon glyphicon-heart"> </span> Add to favorite
+		    			
+		    		</button>
+		    	</div>
+		    	<div id="resp"></div>
+		    </section>
+		  </div>
+		  <div id="menu1" class="tab-pane ">
+		    <h3>Favorites </h3>
+		    <button id="clear_favorites" type="button" class="btn btn-success pull-right" >Clear favorites</button>
+		    <div id="favorites"></div>
+		  </div>
+		  <div id="menu2" class="tab-pane">
+		    <h3>History</h3>
+		    <button id="clear_history" type="button" class="btn btn-success pull-right" >Clear history</button>
+		    <div id="search_history"></div>
+
+		  </div>
+		</div>
+
+		
+		
+	</body>
+</html>
