@@ -1,17 +1,17 @@
-var loadConfig = ()=>{
+var loadConfig = () => {
 
-	return new Promise((resolve,reject)=>{
-			var xhrConfig = new XMLHttpRequest();
-			xhrConfig.onreadystatechange = function() {
-				if (xhrConfig.status === 200 && xhrConfig.readyState === 4) {
-					var config = JSON.parse(xhrConfig.response);
-					resolve(config);
-					
+	return new Promise((resolve, reject) => {
+		var xhrConfig = new XMLHttpRequest();
+		xhrConfig.onreadystatechange = function() {
+			if (xhrConfig.status === 200 && xhrConfig.readyState === 4) {
+				var config = JSON.parse(xhrConfig.response);
+				resolve(config);
 
-				}
+
 			}
-			xhrConfig.open("GET", chrome.extension.getURL('/config.json'), true);
-			xhrConfig.send();
+		}
+		xhrConfig.open("GET", chrome.extension.getURL('/config.json'), true);
+		xhrConfig.send();
 
 
 	})
@@ -64,56 +64,68 @@ var saveHistory = (searchQuery) => {
 	})
 }
 
+var noDefinitionsFound = ()=>{
+	document.getElementById("resp").innerHTML = '<h3>No definitions found ! </h3> <br> See your search query. Use singular instead of plural. <br>Example - Search for <b>account </b> instead of <b>accounts</b> ';
+	document.getElementById('add_to_favorite').style.visibility = "hidden";
+}
+
 var searchWordMeaning = (searchQuery) => {
+	document.getElementById('add_to_favorite').style.visibility = "hidden";
 	var wordMeaning = '';
-	loadConfig().then(function(config){
+	loadConfig().then(function(config) {
 		var xhr = new XMLHttpRequest();
 		var apiUrl = "https://od-api.oxforddictionaries.com:443/api/v1/entries/en/" + searchQuery;
 		xhr.open("GET", apiUrl, true);
 		xhr.setRequestHeader("app_id", config.app_id);
 		xhr.setRequestHeader("app_key", config.app_key);
-		document.getElementById("resp").innerHTML = 'Loading definitions...';
+		document.getElementById("resp").innerHTML = '<h3>Loading definitions...</h3>';
 		xhr.onreadystatechange = () => {
-			if (xhr.readyState === 4 && xhr.status === 200) {
+			if (xhr.readyState === 4) {
 
-				var response = JSON.parse(xhr.responseText);
-				if (response.results && response.results.length) {
-					response.results.forEach((result) => {
-						result.lexicalEntries.forEach((lexicalEntry) => {
-							lexicalEntry.entries.forEach((subEntry) => {
-								wordMeaning = wordMeaning + '<p>';
-								subEntry.senses.forEach((sense) => {
-									if (sense.definitions && sense.definitions.length) {
-										wordMeaning = wordMeaning + sense.definitions[0] + '<br>';
-										if (sense.examples && sense.examples.length) {
-											wordMeaning = wordMeaning + '<b>';
-											wordMeaning = wordMeaning + 'eg:' + sense.examples[0].text + '<br>';
-											wordMeaning = wordMeaning + '</b>';
+				if (xhr.status === 200) {
+
+					var response = JSON.parse(xhr.responseText);
+					if (response.results && response.results.length) {
+						response.results.forEach((result) => {
+							result.lexicalEntries.forEach((lexicalEntry) => {
+								lexicalEntry.entries.forEach((subEntry) => {
+									wordMeaning = wordMeaning + '<p>';
+									subEntry.senses.forEach((sense) => {
+										if (sense.definitions && sense.definitions.length) {
+											wordMeaning = wordMeaning + sense.definitions[0] + '<br>';
+											if (sense.examples && sense.examples.length) {
+												wordMeaning = wordMeaning + '<b>';
+												wordMeaning = wordMeaning + 'eg:' + sense.examples[0].text + '<br>';
+												wordMeaning = wordMeaning + '</b>';
+
+											}
 
 										}
 
-									}
-
+									})
 								})
 							})
 						})
-					})
 
+					} else {
+						noDefinitionsFound();
+					}
+
+					document.getElementById('add_to_favorite').style.visibility = "visible";
+					document.getElementById("resp").innerHTML = wordMeaning;
+					saveHistory(searchQuery);
+
+				} else {
+					noDefinitionsFound();
 				}
 
 
 
-				document.getElementById('add_to_favorite').style.visibility = "visible";
-				document.getElementById("resp").innerHTML = wordMeaning;
-				saveHistory(searchQuery);
-
-			} else {
-				document.getElementById("resp").innerHTML = 'No definitions found !';
 			}
 		}
 		xhr.send();
 	})
-	
+
 
 
 }
@@ -182,10 +194,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	});
 
-	document.ondblclick = function () {
-	   var sel = (document.selection && document.selection.createRange().text) ||
-	             (window.getSelection && window.getSelection().toString());
-		document.getElementById('search_query').value = sel;	             
-	   searchWordMeaning(sel);
+	document.ondblclick = function() {
+		var sel = (document.selection && document.selection.createRange().text) ||
+			(window.getSelection && window.getSelection().toString());
+		document.getElementById('search_query').value = sel;
+		searchWordMeaning(sel);
 	};
+
+	document.getElementsByName('searchForm')[0].onsubmit = function(evt) {
+		evt.preventDefault();
+		var searchQuery = document.getElementById('search_query').value;
+		searchWordMeaning(searchQuery);
+		document.getElementById('search_query').blur();
+	}
 });

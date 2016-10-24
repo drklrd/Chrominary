@@ -26,3 +26,10 @@ section { padding: 5px;}
 	/*margin-left: 50%;*/
 }
 
+#search_history{
+	padding: 10px;
+}
+
+#favorites {
+	padding: 10px;
+}
