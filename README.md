@@ -14,6 +14,7 @@ A simple chrome based extension to look up word meanings.Dictionary content-cour
 8. Thats all ! 
 9. You can search the word by clicking the Chrominary extension icon.
 10. OR you can look for the word in the document by selecting the word , 'right-clicking' and selecting "Search in Chrominary".
+11. OR you can double click on any word, anywhere, to get its meaning.
 
 #License
 

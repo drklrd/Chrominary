@@ -181,4 +181,11 @@ document.addEventListener('DOMContentLoaded', () => {
 		searchWordMeaning(searchQuery);
 
 	});
+
+	document.ondblclick = function () {
+	   var sel = (document.selection && document.selection.createRange().text) ||
+	             (window.getSelection && window.getSelection().toString());
+		document.getElementById('search_query').value = sel;	             
+	   searchWordMeaning(sel);
+	};
 });

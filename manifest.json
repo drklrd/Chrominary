@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
-	"name": "Chrome Extension",
-	"description": "This is a chrome extension",
+	"name": "Chrominary",
+	"description": "A simple chrome based extension to look up word meanings",
 	"version": "1.0",
 	"icons": {
 		"16": "img/icon16.png",
