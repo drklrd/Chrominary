@@ -4,21 +4,18 @@
 	"description": "A simple chrome based extension to look up word meanings",
 	"version": "1.0",
 	"icons": {
-		"16": "img/icon16.png",
-		"48": "img/icon48.png",
-		"128": "img/icon128.png"
+		"48": "img/icon48.png"
 	},
 	"browser_action": {
-		"default_icon": {
-			"19": "img/icon48.png",
-			"38": "img/icon48.png"
-		},
+		"default_icon": "img/icon48.png",
 		"default_popup": "popup.html"
 	},
 	"permissions": [
-	    "https://od-api.oxforddictionaries.com:443/api/v1/*",
-	    "contextMenus",
-	    "storage"
+		"https://od-api.oxforddictionaries.com:443/api/v1/*",
+		"contextMenus",
+		"storage"
 	],
-	"background": {"page": "background.html"}
+	"background": {
+		"page": "background.html"
+	}
 }
