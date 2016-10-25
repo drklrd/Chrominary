@@ -31,15 +31,21 @@ section { padding: 5px;}
 #search_history{
 	padding: 10px;
 	margin-bottom: 50px;
+	font-style: italic;
+	font-weight: bold;
 }
 
 #favorites {
 	padding: 10px;
 	margin-bottom: 50px;
+	font-style: italic;
+	font-weight: bold;
 }
 
 #resp{
 	margin-bottom: 50px;
+	font-weight: bold;
+	font-style: italic;
 }
 
 .font-red{
