@@ -44,8 +44,8 @@ section { padding: 5px;}
 
 #resp{
 	margin-bottom: 50px;
-	font-weight: bold;
-	font-style: italic;
+	/*font-weight: bold;*/
+	/*font-style: italic;*/
 }
 
 .font-red{
