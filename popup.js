@@ -60,7 +60,7 @@ var saveHistory = (searchQuery) => {
 }
 
 var noDefinitionsFound = ()=>{
-	document.getElementById("resp").innerHTML = '<h3>No definitions found ! </h3> <br> See your search query. Also use singular instead of plural. <br>Example - Search for <b>account </b> instead of <b>accounts</b> ';
+	document.getElementById("resp").innerHTML = '<h3>No definitions found ! </h3> <br> Try modifying your search query. Also use singular instead of plural. <br>Example - Search for <b>account </b> instead of <b>accounts</b> ';
 	document.getElementById('add_to_favorite').style.visibility = "hidden";
 }
 
