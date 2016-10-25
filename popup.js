@@ -163,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		document.getElementById('search_query').value = query;
 		searchWordMeaning(query);
 		applyFullScreen(['bodyID','home-section','favorite-section','history-section']);
+		document.getElementById('footerID').style.width="100%";
 	}
 
 	document.getElementById('add_to_favorite').style.visibility = "hidden";
