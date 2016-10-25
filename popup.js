@@ -65,66 +65,94 @@ var noDefinitionsFound = ()=>{
 }
 
 var searchWordMeaning = (searchQuery) => {
-	document.getElementById('add_to_favorite').style.visibility = "hidden";
-	var wordMeaning = '';
-	loadConfig().then(function(config) {
-		var xhr = new XMLHttpRequest();
-		var apiUrl = "https://od-api.oxforddictionaries.com:443/api/v1/entries/en/" + searchQuery;
-		xhr.open("GET", apiUrl, true);
-		xhr.setRequestHeader("app_id", config.app_id);
-		xhr.setRequestHeader("app_key", config.app_key);
-		document.getElementById("resp").innerHTML = '<h3>Loading definitions...</h3>';
-		xhr.onreadystatechange = () => {
-			if (xhr.readyState === 4) {
 
-				if (xhr.status === 200) {
+	if(searchQuery && searchQuery.length){
+		document.getElementById("return_home").click();
+		if(!navigator.onLine){
+			document.getElementById("resp").innerHTML = "<h2>No Internet Connection !<h2>";
+			return false;
+		}
+		document.getElementById('add_to_favorite').style.visibility = "hidden";
+		var wordMeaning = '';
+		loadConfig().then(function(config) {
+			var xhr = new XMLHttpRequest();
+			var apiUrl = "https://od-api.oxforddictionaries.com:443/api/v1/entries/en/" + searchQuery;
+			xhr.open("GET", apiUrl, true);
+			xhr.setRequestHeader("app_id", config.app_id);
+			xhr.setRequestHeader("app_key", config.app_key);
+			document.getElementById("resp").innerHTML = '<h3>Loading definitions...</h3>';
+			xhr.onreadystatechange = () => {
+				if (xhr.readyState === 4) {
 
-					var response = JSON.parse(xhr.responseText);
-					if (response.results && response.results.length) {
-						response.results.forEach((result) => {
-							result.lexicalEntries.forEach((lexicalEntry) => {
-								lexicalEntry.entries.forEach((subEntry) => {
-									wordMeaning = wordMeaning + '<p>';
-									subEntry.senses.forEach((sense) => {
-										if (sense.definitions && sense.definitions.length) {
-											wordMeaning = wordMeaning + sense.definitions[0] + '<br>';
-											if (sense.examples && sense.examples.length) {
-												wordMeaning = wordMeaning + '<b>';
-												wordMeaning = wordMeaning + 'eg:' + sense.examples[0].text + '<br>';
-												wordMeaning = wordMeaning + '</b>';
+					if (xhr.status === 200) {
+
+						var response = JSON.parse(xhr.responseText);
+
+						if (response.results && response.results.length) {
+							response.results.forEach((result) => {
+								result.lexicalEntries.forEach((lexicalEntry) => {
+									lexicalEntry.entries.forEach((subEntry) => {
+										wordMeaning = wordMeaning + '<p>';
+										subEntry.senses.forEach((sense) => {
+											if (sense.definitions && sense.definitions.length) {
+												wordMeaning = wordMeaning + sense.definitions[0] + '<br>';
+												if (sense.examples && sense.examples.length) {
+													wordMeaning = wordMeaning + '<b>';
+													wordMeaning = wordMeaning + 'eg:' + sense.examples[0].text + '<br>';
+													wordMeaning = wordMeaning + '</b>';
+
+												}
 
 											}
 
-										}
-
+										})
 									})
 								})
 							})
-						})
+
+						} else {
+							noDefinitionsFound();
+						}
+
+						document.getElementById('add_to_favorite').style.visibility = "visible";
+						document.getElementById("resp").innerHTML = wordMeaning;
+						saveHistory(searchQuery);
+
 
 					} else {
 						noDefinitionsFound();
 					}
 
-					document.getElementById('add_to_favorite').style.visibility = "visible";
-					document.getElementById("resp").innerHTML = wordMeaning;
-					saveHistory(searchQuery);
 
-				} else {
-					noDefinitionsFound();
+
 				}
-
-
-
 			}
-		}
-		xhr.send();
-	})
+			xhr.send();
+		})
 
 
+	}
+	
 
 }
 
+var showDoneMessage = (message)=>{
+	document.getElementById('done-container').style.visibility = "visible";
+	document.getElementById("done_message").innerHTML = message;
+	setTimeout(()=>{
+		document.getElementById('done-container').style.visibility = "hidden";
+	},2000);
+}
+
+var applyFullScreen = (selectors)=>{
+	if(selectors && selectors.length){
+		selectors.forEach((selector)=>{
+			document.getElementById(selector).style.width="100%";
+			document.getElementById(selector).style.height="100%";
+		})
+	}
+	
+}
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -134,12 +162,17 @@ document.addEventListener('DOMContentLoaded', () => {
 		var query = window.location.href.split('query=')[1];
 		document.getElementById('search_query').value = query;
 		searchWordMeaning(query);
+		applyFullScreen(['bodyID','home-section','favorite-section','history-section']);
 	}
 
 	document.getElementById('add_to_favorite').style.visibility = "hidden";
+	document.getElementById('done-container').style.visibility = "hidden";
+
+	
 
 	document.getElementById('add_to_favorite').addEventListener('click', () => {
 		addToFavorite(document.getElementById('search_query').value);
+		showDoneMessage('Favorited!');
 	});
 
 	document.getElementById('clear_history').addEventListener('click', () => {
@@ -195,7 +228,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		var sel = (document.selection && document.selection.createRange().text) ||
 			(window.getSelection && window.getSelection().toString());
 		document.getElementById('search_query').value = sel;
-		searchWordMeaning(sel);
+		if(sel && sel.length){
+			searchWordMeaning(sel);
+		}
+		
 	};
 
 	document.getElementsByName('searchForm')[0].onsubmit = function(evt) {

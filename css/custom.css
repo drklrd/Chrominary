@@ -20,16 +20,27 @@ section { padding: 5px;}
 ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:window-inactive  { background: red; }
 
 .footer{
-	font-size: 11px;
+	font-size: 10px;
 	position: absolute;
 	bottom: 0px;
-	/*margin-left: 50%;*/
+	background-color: #ffffff;
+	
 }
 
 #search_history{
 	padding: 10px;
+	margin-bottom: 50px;
 }
 
 #favorites {
 	padding: 10px;
+	margin-bottom: 50px;
+}
+
+#resp{
+	margin-bottom: 50px;
+}
+
+.font-red{
+	color: red;
 }
