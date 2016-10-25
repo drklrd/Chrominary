@@ -89,16 +89,18 @@ var searchWordMeaning = (searchQuery) => {
 						var response = JSON.parse(xhr.responseText);
 
 						if (response.results && response.results.length) {
+							var definitionsCount=0;
 							response.results.forEach((result) => {
 								result.lexicalEntries.forEach((lexicalEntry) => {
 									lexicalEntry.entries.forEach((subEntry) => {
 										wordMeaning = wordMeaning + '<p>';
 										subEntry.senses.forEach((sense) => {
 											if (sense.definitions && sense.definitions.length) {
-												wordMeaning = wordMeaning + sense.definitions[0] + '<br>';
+												wordMeaning = wordMeaning + '<p>' + (definitionsCount+1) +'. ' +sense.definitions[0] + '<br>';
+												definitionsCount++;
 												if (sense.examples && sense.examples.length) {
 													wordMeaning = wordMeaning + '<b>';
-													wordMeaning = wordMeaning + 'eg:' + sense.examples[0].text + '<br>';
+													wordMeaning = wordMeaning + 'Example:' + sense.examples[0].text + '<br>';
 													wordMeaning = wordMeaning + '</b>';
 
 												}
